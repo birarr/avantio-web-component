@@ -5,15 +5,15 @@ import { Input } from "../../../ui/components/input";
 import { AccomodationModel } from "../../../../schemas/accomodation/accomodation-form";
 import { AnimatePresence } from "motion/react";
 
-export const OwnerStep = ({ step }: newAccomodationStepsProps) => {
+export const OwnerStep = ({
+  step,
+  title,
+  subtitle,
+}: newAccomodationStepsProps) => {
   const {
     control,
     formState: { errors },
-    watch,
   } = useFormContext<AccomodationModel>();
-  const { ownerName } = watch();
-
-  console.log({ ownerName });
 
   return (
     <AnimatePresence>
@@ -26,7 +26,10 @@ export const OwnerStep = ({ step }: newAccomodationStepsProps) => {
         className="flex flex-col justify-center p-4 gap-4"
       >
         <div className="text-black flex flex-col justify-center gap-4">
-          <h1 className="text-black w-full">Owner Step</h1>
+          <div className="flex flex-col gap-2">
+            <h1 className="text-black w-full">{title}</h1>
+            {subtitle && <h2 className="text-gray-900">{subtitle}</h2>}
+          </div>
           <div className="flex flex-col justify-center gap-4">
             <Controller
               name="ownerName"

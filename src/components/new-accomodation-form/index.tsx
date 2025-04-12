@@ -8,12 +8,15 @@ import { AccomodationModel } from "../../schemas/accomodation/accomodation-form"
 import * as motion from "motion/react-client";
 import { Modal } from "../ui/components/modal";
 
-export const NewAccomodationForm = () => {
+export const NewAccomodationForm: React.FC<{
+  onFinish?: (data: FormData) => void;
+}> = ({ onFinish }) => {
   const [step, setStep] = useState(0);
+  const [showModal, setShowModal] = useState(false);
   const buttonText = useMemo(() => {
     return step === 2 ? "Submit" : "Next";
   }, [step]);
-  console.log({ step });
+
   const {
     setValue,
     getValues,
@@ -21,9 +24,9 @@ export const NewAccomodationForm = () => {
     watch,
     formState: { isValid },
   } = useFormContext<AccomodationModel>();
-  const disabledButton = !isValid || step === 3;
+  const { formStep, photos } = watch();
 
-  const { formStep } = watch();
+  const disabledButton = !isValid || step === 3;
 
   const onAllStepsCompleted = () => {
     console.log(getValues());
@@ -32,7 +35,8 @@ export const NewAccomodationForm = () => {
   const onSubmit = () => {
     setValue("formStep", formStep + 1);
     if (step === 2) {
-      return <Modal />;
+      setShowModal(true);
+      return;
     }
     setStep(step + 1);
   };
@@ -40,11 +44,25 @@ export const NewAccomodationForm = () => {
   const renderStep = (step: number) => {
     switch (step) {
       case 0:
-        return <AccomodationStep key={"accomodation"} />;
+        return (
+          <AccomodationStep
+            key={"accomodation"}
+            title={"Accomodation info"}
+            subtitle={"Please fill the required info below:"}
+          />
+        );
       case 1:
-        return <OwnerStep key={"owner"} />;
+        return (
+          <OwnerStep
+            key={"owner"}
+            title={"Owner info"}
+            subtitle={"Please fill the required info below:"}
+          />
+        );
       default:
-        return <OverviewStep />;
+        return (
+          <OverviewStep title={"Overview"} subtitle={"Accomodation details:"} />
+        );
     }
   };
 
@@ -52,6 +70,9 @@ export const NewAccomodationForm = () => {
     <div className="flex flex-col justify-center w-screen">
       <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
         {renderStep(step)}
+        {showModal && (
+          <Modal isSubmissionSuccessfull={true} setStep={setStep} />
+        )}
         <motion.div
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -60,12 +81,12 @@ export const NewAccomodationForm = () => {
             delay: 0.5,
             ease: [0, 0.71, 0.2, 1.01],
           }}
-          className="w-screen p-4"
+          className="w-screen px-4"
           key={step}
         >
           <Button
             text={buttonText}
-            className="text-white my-4 w-full disabled:opacity-50"
+            className="text-white w-full disabled:opacity-50 mb-2"
             type="submit"
             disabled={disabledButton}
           />

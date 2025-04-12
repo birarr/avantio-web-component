@@ -1,19 +1,36 @@
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import * as motion from "motion/react-client";
 import { Input } from "../../../ui/components/input";
 import { SelectDropdown } from "../../../ui/components/select-dropdown";
 import {
+  MAX_PHOTOS,
   newAccomodationStepsProps,
   propertyTypesArray,
 } from "../../index.types";
 import { AccomodationModel } from "../../../../schemas/accomodation/accomodation-form";
 import { AnimatePresence } from "motion/react";
+import { PhotoInput } from "../../../ui/components/photo-input";
+import { useEffect } from "react";
 
-export const AccomodationStep = ({}: newAccomodationStepsProps) => {
+export const AccomodationStep = ({
+  title,
+  subtitle,
+}: newAccomodationStepsProps) => {
   const {
     control,
     formState: { errors },
   } = useFormContext<AccomodationModel>();
+
+  const { fields, append } = useFieldArray({
+    control, // control props comes from useForm (optional: if you are using FormProvider)
+    name: "photos", // unique name for your Field Array
+  });
+
+  useEffect(() => {
+    for (let i = 0; i <= MAX_PHOTOS; i++) {
+      append({ photo: undefined });
+    }
+  }, []);
 
   return (
     <AnimatePresence>
@@ -25,7 +42,10 @@ export const AccomodationStep = ({}: newAccomodationStepsProps) => {
         key="accomodation"
         className="flex flex-col justify-center p-4 gap-4"
       >
-        <h1 className="text-black w-full">Accomodation</h1>
+        <div className="flex flex-col gap-2">
+          <h1 className="text-black w-full">{title}</h1>
+          {subtitle && <h2 className="text-gray-900">{subtitle}</h2>}
+        </div>
         <div className="flex flex-col gap-4">
           <Controller
             name="name"
@@ -93,6 +113,21 @@ export const AccomodationStep = ({}: newAccomodationStepsProps) => {
               </>
             )}
           />
+          <div className="flex gap-4">
+            {fields.map((field, index) => {
+              return (
+                <div key={index}>
+                  <PhotoInput
+                    name={`photos.${index}.photo`}
+                    label="Upload Photos"
+                    control={control}
+                    defaultValue={[]}
+                    index={index}
+                  />
+                </div>
+              );
+            })}
+          </div>
         </div>
       </motion.div>
     </AnimatePresence>

@@ -16,11 +16,9 @@ function App() {
   });
 
   return (
-    <>
-      <FormProvider {...methods}>
-        <NewAccomodationForm />
-      </FormProvider>
-    </>
+    <FormProvider {...methods}>
+      <NewAccomodationForm />
+    </FormProvider>
   );
 }
 

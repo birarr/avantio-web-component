@@ -5,12 +5,15 @@ export interface AccomodationModel {
   address: string;
   description: string;
   type: string;
-  // title: string;
   ownerName: string;
   ownerEmail: string;
   ownerPhoneNumber: string;
   formStep: number;
-  // photos: string[] | undefined;
+  photos: [
+    {
+      photo: File | undefined;
+    }
+  ];
 }
 
 // const photo = Yup.string();
@@ -24,7 +27,18 @@ export const initialAccomodationValues: AccomodationModel = {
   ownerEmail: "",
   ownerPhoneNumber: "",
   formStep: 1,
-  // photos: undefined,
+  photos: [{ photo: undefined }],
+};
+
+const getImageDimensions = (
+  file: File
+): Promise<{ width: number; height: number }> => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve({ width: img.width, height: img.height });
+    img.onerror = reject;
+    img.src = URL.createObjectURL(file);
+  });
 };
 
 export const accomodationFormSchema = Yup.object().shape({
@@ -73,5 +87,4 @@ export const accomodationFormSchema = Yup.object().shape({
     .notRequired()
     .max(9, "The phone number can't exceed 9 digits."),
   formStep: Yup.number(),
-  // photos: Yup.array(),
 });
