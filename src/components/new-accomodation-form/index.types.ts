@@ -2,6 +2,7 @@ export interface newAccomodationStepsProps {
   step?: number;
   title: string;
   subtitle?: string;
+  setStep?: (item: number) => void;
 }
 
 export enum propertyTypes {

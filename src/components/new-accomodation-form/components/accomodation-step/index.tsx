@@ -22,13 +22,15 @@ export const AccomodationStep = ({
   } = useFormContext<AccomodationModel>();
 
   const { fields, append } = useFieldArray({
-    control, // control props comes from useForm (optional: if you are using FormProvider)
-    name: "photos", // unique name for your Field Array
+    control,
+    name: "photos",
   });
 
   useEffect(() => {
-    for (let i = 0; i <= MAX_PHOTOS; i++) {
-      append({ photo: undefined });
+    if (fields?.length < 2) {
+      for (let i = 0; i <= MAX_PHOTOS; i++) {
+        append({ photo: undefined });
+      }
     }
   }, []);
 
@@ -114,7 +116,7 @@ export const AccomodationStep = ({
             )}
           />
           <div className="flex gap-4">
-            {fields.map((field, index) => {
+            {fields?.map((field, index) => {
               return (
                 <div key={index}>
                   <PhotoInput

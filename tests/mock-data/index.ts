@@ -10,4 +10,5 @@ export const mockedAccomodationData: AccomodationModel = {
   ownerName: "John Doe",
   ownerEmail: "jonh@mail.com",
   ownerPhoneNumber: "999999999",
+  photos: [{ photo: undefined }],
 };

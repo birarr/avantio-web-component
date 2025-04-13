@@ -7,6 +7,7 @@ import { Button } from "../ui/components/button";
 import { AccomodationModel } from "../../schemas/accomodation/accomodation-form";
 import * as motion from "motion/react-client";
 import { Modal } from "../ui/components/modal";
+import { getRandomBoolean } from "../../utils/app-usage";
 
 export const NewAccomodationForm: React.FC<{
   onFinish?: (data: FormData) => void;
@@ -22,9 +23,10 @@ export const NewAccomodationForm: React.FC<{
     getValues,
     handleSubmit,
     watch,
-    formState: { isValid },
+    formState: { isValid, errors },
   } = useFormContext<AccomodationModel>();
-  const { formStep, photos } = watch();
+  const { formStep } = watch();
+  const isSubmissionSuccessfull = getRandomBoolean();
 
   const disabledButton = !isValid || step === 3;
 
@@ -33,11 +35,11 @@ export const NewAccomodationForm: React.FC<{
   };
 
   const onSubmit = () => {
-    setValue("formStep", formStep + 1);
     if (step === 2) {
       setShowModal(true);
       return;
     }
+    setValue("formStep", formStep + 1);
     setStep(step + 1);
   };
 
@@ -57,6 +59,7 @@ export const NewAccomodationForm: React.FC<{
             key={"owner"}
             title={"Owner info"}
             subtitle={"Please fill the required info below:"}
+            setStep={setStep}
           />
         );
       default:
@@ -71,7 +74,10 @@ export const NewAccomodationForm: React.FC<{
       <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
         {renderStep(step)}
         {showModal && (
-          <Modal isSubmissionSuccessfull={true} setStep={setStep} />
+          <Modal
+            isSubmissionSuccessfull={isSubmissionSuccessfull}
+            setStep={setStep}
+          />
         )}
         <motion.div
           initial={{ opacity: 0, scale: 0.5 }}

@@ -7,6 +7,7 @@ import {
 import { useMemo, useState } from "react";
 import { CheckCircleIcon, OctagonAlert } from "lucide-react";
 import { FieldValues, useFormContext } from "react-hook-form";
+import { initialAccomodationValues } from "../../../../schemas/accomodation/accomodation-form";
 
 interface ModalProps {
   isSubmissionSuccessfull: boolean;
@@ -69,10 +70,14 @@ export const Modal = ({
   }, []);
 
   const handleConfirmButton = () => {
-    reset();
+    reset(initialAccomodationValues);
     setStep(0);
     setIsOpen(false);
     onFinish && onFinish(getValues());
+  };
+
+  const goToHomePage = (homepage: string) => {
+    console.log(homepage);
   };
 
   return (
@@ -114,6 +119,7 @@ export const Modal = ({
                 </button>
                 <button
                   type="button"
+                  onClick={() => goToHomePage("homepage")}
                   className={`inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-xs sm:ml-3 sm:w-auto`}
                 >
                   Go to homepage

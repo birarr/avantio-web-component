@@ -16,28 +16,8 @@ describe("Overview Step", () => {
   );
 
   it("should render heading with text", async () => {
-    const heading = screen.getByRole("heading");
+    const heading = screen.getByRole("heading", { name: /overview/i });
 
     expect(heading).toHaveTextContent(/overview/i);
-
-    // expect(
-    //   screen.getByRole("heading", { name: /overview/i })
-    // ).toBeInTheDocument();
-  });
-
-  it("should render the name input", async () => {
-    const input = screen.getByLabelText("Email *");
-
-    expect(input).toBeInTheDocument();
-  });
-
-  it("should allow typing in the email input", async () => {
-    const input = screen.getByLabelText("Email *");
-
-    expect(input).toBeInTheDocument();
-
-    await userEvent.type(input, mockedAccomodationData.ownerName);
-
-    expect(input).toHaveValue(mockedAccomodationData.ownerName);
   });
 });

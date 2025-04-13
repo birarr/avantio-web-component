@@ -4,7 +4,7 @@ import {
   UseControllerProps,
   useFormContext,
 } from "react-hook-form";
-import { Plus } from "lucide-react";
+import { Edit2Icon, Plus } from "lucide-react";
 import { checkImageDimensions } from "../../../../utils/images";
 import { AccomodationModel } from "../../../../schemas/accomodation/accomodation-form";
 
@@ -90,6 +90,13 @@ export const PhotoInput: React.FC<PhotoInputProps> = ({
                 src={preview}
                 alt="Preview"
                 className="absolute inset-0 w-full h-full object-cover rounded-xl"
+              />
+            )}
+
+            {preview && (
+              <Edit2Icon
+                className="text-gray-400 group-hover:scale-110 transition-transform z-10"
+                size={32}
               />
             )}
 
