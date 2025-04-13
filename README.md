@@ -8,9 +8,11 @@ React-hook-form (form management)
 Yup (form validation)
 RTL (app testing)
 
-There's a version of it depoloyed on Vewrcel, but after the deploy, is not getting the correct styling.
+There's a version of it depoloyed on Vercel, but after the deploy, is not getting the correct styling.
 
 The idea was let the component the most simple as posible, creating custom components direct on it.
+
+--------------//----------------------------------
 
 Avantio React Challenge
 Multi-Step Accommodation Creation Form.
