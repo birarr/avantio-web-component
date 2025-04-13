@@ -116,7 +116,7 @@ export const AccomodationStep = ({
             )}
           />
           <div className="flex gap-4">
-            {fields?.map((field, index) => {
+            {fields?.map((_, index) => {
               return (
                 <div key={index}>
                   <PhotoInput
