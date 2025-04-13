@@ -25,12 +25,13 @@ export const SelectDropdown = ({
   field,
   propertyTypesArray,
   required,
+  nameProp,
 }: SelectDropdownProps) => {
   return (
     <div className="w-full">
       {label && (
         <label
-          htmlFor="fruit"
+          htmlFor={nameProp}
           className={`${
             labelClassName
               ? labelClassName
@@ -44,6 +45,7 @@ export const SelectDropdown = ({
         {...field}
         disabled={disabled}
         className={`p-2 border border-gray-900 rounded-md shadow-xl ${className}`}
+        id={nameProp}
       >
         <option value="" disabled>
           Please select the property type:

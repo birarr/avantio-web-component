@@ -4,11 +4,81 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
-import { useState } from "react";
-// import { OctagonAlert } from "lucide-react";
+import { useMemo, useState } from "react";
+import { CheckCircleIcon, OctagonAlert } from "lucide-react";
+import { FieldValues, useFormContext } from "react-hook-form";
+import { initialAccomodationValues } from "../../../../schemas/accomodation/accomodation-form";
 
-export const Modal = () => {
+interface ModalProps {
+  isSubmissionSuccessfull: boolean;
+  setStep: (item: number) => void;
+  onFinish?: (data: FieldValues) => void;
+}
+
+export const Modal = ({
+  isSubmissionSuccessfull,
+  setStep,
+  onFinish,
+}: ModalProps) => {
   const [isOpen, setIsOpen] = useState(true);
+  const { getValues, reset } = useFormContext();
+
+  const renderModalIcon = useMemo(() => {
+    if (isSubmissionSuccessfull) {
+      return <CheckCircleIcon className="text-green-500" size={40} />;
+    } else {
+      return <OctagonAlert className="text-orange-500" size={40} />;
+    }
+  }, []);
+
+  const renderTitle = useMemo(() => {
+    if (isSubmissionSuccessfull) {
+      return (
+        <DialogTitle as="h2" className={"text-2xl"}>
+          Great! Accomodation created!
+        </DialogTitle>
+      );
+    } else {
+      return (
+        <DialogTitle as="h2" className={"text-2xl"}>
+          Ownnn! Error on accomodation creation!
+        </DialogTitle>
+      );
+    }
+  }, []);
+
+  const renderSubtitle = useMemo(() => {
+    if (isSubmissionSuccessfull) {
+      return (
+        <p className={`text-sm `}>You can add another one or go to homepage.</p>
+      );
+    } else {
+      return (
+        <p className={`text-sm `}>
+          You can try add it again or go to homepage.
+        </p>
+      );
+    }
+  }, []);
+
+  const renderConfirmButtonText = useMemo(() => {
+    if (isSubmissionSuccessfull) {
+      return <p>Add new accomodation</p>;
+    } else {
+      return <p className={`text-sm `}>Try again</p>;
+    }
+  }, []);
+
+  const handleConfirmButton = () => {
+    reset(initialAccomodationValues);
+    setStep(0);
+    setIsOpen(false);
+    onFinish && onFinish(getValues());
+  };
+
+  const goToHomePage = (homepage: string) => {
+    console.log(homepage);
+  };
 
   return (
     <>
@@ -29,35 +99,31 @@ export const Modal = () => {
                   <div
                     className={`mx-auto flex size-12 shrink-0 items-center justify-center rounded-full sm:mx-0 sm:size-10`}
                   >
-                    {/* <OctagonAlert /> */}
+                    {renderModalIcon}
                   </div>
-                  <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                    <DialogTitle as="h3" className={`text-base`}>
-                      This site is for adults only
-                    </DialogTitle>
-                    <div className="mt-2">
-                      <p className={`text-sm `}>
-                        You can only access if you're over 18 years old
-                      </p>
-                    </div>
+                  <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left text-gray-900">
+                    {renderTitle}
+                    <div className="mt-2">{renderSubtitle}</div>
                   </div>
                 </div>
               </div>
-              <div className={` px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6`}>
+              <div
+                className={` px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 flex  flex-col gap-2`}
+              >
                 <button
                   type="button"
-                  onClick={() => setIsOpen(false)}
+                  onClick={handleConfirmButton}
                   className={`inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-xs sm:ml-3 sm:w-auto`}
                 >
-                  Yes'I am over 18 (Enter)
+                  {renderConfirmButtonText}
                 </button>
-                <a
-                  rel="noopener noreferrer"
-                  href="https://kidshealth.org/en/kids/puberty.html"
-                  className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                <button
+                  type="button"
+                  onClick={() => goToHomePage("homepage")}
+                  className={`inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-xs sm:ml-3 sm:w-auto`}
                 >
-                  Cancel
-                </a>
+                  Go to homepage
+                </button>
               </div>
             </DialogPanel>
           </div>

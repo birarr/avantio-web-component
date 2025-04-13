@@ -12,15 +12,12 @@ function App() {
     mode: "onBlur",
     resolver: yupResolver(accomodationFormSchema),
     defaultValues: initialAccomodationValues,
-    // context: { formStep: currentStep },
   });
 
   return (
-    <>
-      <FormProvider {...methods}>
-        <NewAccomodationForm />
-      </FormProvider>
-    </>
+    <FormProvider {...methods}>
+      <NewAccomodationForm />
+    </FormProvider>
   );
 }
 
