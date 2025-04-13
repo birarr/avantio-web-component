@@ -11,7 +11,7 @@ import { getRandomBoolean } from "../../utils/app-usage";
 
 export const NewAccomodationForm: React.FC<{
   onFinish?: (data: FormData) => void;
-}> = ({ onFinish }) => {
+}> = ({}) => {
   const [step, setStep] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const buttonText = useMemo(() => {
@@ -20,19 +20,18 @@ export const NewAccomodationForm: React.FC<{
 
   const {
     setValue,
-    getValues,
     handleSubmit,
     watch,
-    formState: { isValid, errors },
+    formState: { isValid },
   } = useFormContext<AccomodationModel>();
   const { formStep } = watch();
   const isSubmissionSuccessfull = getRandomBoolean();
 
   const disabledButton = !isValid || step === 3;
 
-  const onAllStepsCompleted = () => {
-    console.log(getValues());
-  };
+  // const onAllStepsCompleted = () => {
+  //   console.log(getValues());
+  // };
 
   const onSubmit = () => {
     if (step === 2) {
