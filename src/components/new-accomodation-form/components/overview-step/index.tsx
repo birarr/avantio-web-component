@@ -4,21 +4,35 @@ import { AccomodationFormKeysList } from "./components/accomodation-form-keys-li
 import * as motion from "motion/react-client";
 import { AnimatePresence } from "motion/react";
 import { AccomodationModel } from "../../../../schemas/accomodation/accomodation-form";
+import { AccomodationPhotos } from "./components/accomodation-photos";
 
-export const OverviewStep = ({ step }: newAccomodationStepsProps) => {
+export const OverviewStep = ({
+  step,
+  subtitle,
+  title,
+}: newAccomodationStepsProps) => {
   const { getValues } = useFormContext<AccomodationModel>();
-  console.log(getValues());
+
   const accomodationEntries = Object.entries(getValues())?.filter(
     (item) =>
-      !item[0]?.startsWith(typesOfEntities.owner) && item?.[0] !== "formStep"
+      !item[0]?.startsWith(typesOfEntities.owner) &&
+      !item[0]?.startsWith(typesOfEntities.photo) &&
+      item?.[0] !== "formStep"
   );
-  console.log({ accomodationEntries });
+
+  const accomodationPhotosEntries = Object.entries(getValues())?.filter(
+    (item) => item[0]?.startsWith(typesOfEntities.photo)
+  );
+
+  const newAccomodationPhotos = accomodationPhotosEntries?.map(([_, item]) => {
+    return item;
+  });
+
   const ownerEntries = Object.entries(getValues())?.filter(
     (item) =>
       item[0]?.startsWith(typesOfEntities.owner) && item?.[0] !== "formStep"
   );
 
-  console.log({ accomodationEntries });
   return (
     <AnimatePresence>
       <motion.div
@@ -29,11 +43,16 @@ export const OverviewStep = ({ step }: newAccomodationStepsProps) => {
         key={step}
         className="flex flex-col justify-center p-4 gap-4 w-ful"
       >
+        <div className="flex flex-col">
+          <h1 className="text-black w-full">{title}</h1>
+          {subtitle && <h2 className="text-gray-900">{subtitle}</h2>}
+        </div>
         <div className="flex flex-col gap-2">
           <AccomodationFormKeysList
             values={accomodationEntries}
             title="Accomodation"
           />
+          <AccomodationPhotos photos={newAccomodationPhotos?.[0]} />
           <AccomodationFormKeysList values={ownerEntries} title="Owner" />
         </div>
       </motion.div>

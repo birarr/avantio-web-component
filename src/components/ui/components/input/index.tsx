@@ -39,6 +39,8 @@ export const Input = <T extends FieldValues>({
       case "textarea": {
         return (
           <textarea
+            name={name}
+            id={name}
             autoComplete="new-off"
             placeholder={placeHolder}
             maxLength={maxLength}
@@ -57,6 +59,7 @@ export const Input = <T extends FieldValues>({
             style={{ width: "100%" }}
             type={type}
             name={name}
+            id={name}
             value={value}
             className={
               "font-semibold bg-white focus:bg-gray-100 focus:ring-uiMidDark border border-gray-900 focus:border focus:border-uiMidDark block w-full sm:text-sm rounded-md text-gray-900 p-3 placeholder-textLight font-h1 shadow-xl"
@@ -72,7 +75,10 @@ export const Input = <T extends FieldValues>({
   return (
     <div>
       {label && (
-        <label className={"block text-base font-medium text-gray-900 mb-2"}>
+        <label
+          htmlFor={name}
+          className={"block text-base font-medium text-gray-900 mb-2"}
+        >
           {renderLabel(label, required as boolean)}
         </label>
       )}

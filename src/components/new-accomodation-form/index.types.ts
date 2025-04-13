@@ -1,10 +1,8 @@
 export interface newAccomodationStepsProps {
   step?: number;
-}
-
-export interface newAccomodationStepsSelectProps {
-  step: number;
-  setStep: (item: number) => void;
+  title: string;
+  subtitle?: string;
+  setStep?: (item: number) => void;
 }
 
 export enum propertyTypes {
@@ -22,6 +20,7 @@ export const ownerPropertiesNames = [
 export enum typesOfEntities {
   accomodation = "accomodation",
   owner = "owner",
+  photo = "photo",
 }
 
 export const propertyTypesArray = [
@@ -29,3 +28,5 @@ export const propertyTypesArray = [
   propertyTypes.villa,
   propertyTypes.house,
 ];
+
+export const MAX_PHOTOS = 2;
