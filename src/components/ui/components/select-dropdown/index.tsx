@@ -27,6 +27,7 @@ export const SelectDropdown = ({
   required,
   nameProp,
 }: SelectDropdownProps) => {
+  const { onChange, onBlur, value, name, ref } = field;
   return (
     <div className="w-full">
       {label && (
@@ -41,11 +42,23 @@ export const SelectDropdown = ({
           {renderLabel(label, required as boolean)}
         </label>
       )}
-      <select
+      {/* <select
         {...field}
         disabled={disabled}
         className={`p-2 border border-gray-900 rounded-md shadow-xl ${className}`}
         id={nameProp}
+      > */}
+      <select
+        id={name}
+        name={name}
+        ref={ref}
+        value={
+          typeof value === "string" || typeof value === "number" ? value : ""
+        }
+        onChange={onChange}
+        onBlur={onBlur}
+        disabled={disabled}
+        className={`p-2 border border-gray-900 rounded-md shadow-xl ${className}`}
       >
         <option value="" disabled>
           Please select the property type:
